@@ -1,6 +1,6 @@
 # Project Requirements
-python=3.6+
-django=3.2
+# Python version 3.6+
+Django==3.2
 djangorestframework
 django-cors-headers
 django-allauth
