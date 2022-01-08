@@ -7,6 +7,7 @@ from rest_framework import serializers
 from .models import CustomUser, Category, Movie, Review, Rating
 
 
+
 # for rest-auth
 class MyRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=True, write_only=True)
@@ -56,19 +57,15 @@ class MovieReviewsSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['id', 'Review', 'USER']
 
-class MovieRatingsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Rating
-        fields = ['id', 'Count', 'USER']
-
 class MovieSerializer(serializers.ModelSerializer):
     CATEGORIES = serializers.StringRelatedField(many=True)
     reviews = MovieReviewsSerializer(many=True, read_only=True)
-    ratings = MovieRatingsSerializer(many=True, read_only=True)
+    rating = serializers.FloatField()
 
     class Meta:
         model = Movie
-        fields = ['id', 'NAME', 'COVER', 'CAST', 'DESCRIPTION', 'CATEGORIES', 'reviews',  'ratings']
+        fields = ['id', 'NAME', 'COVER', 'CAST', 'DESCRIPTION', 'rating', 'CATEGORIES', 'reviews']
+
 
 
 # for categories
@@ -85,11 +82,13 @@ class CategoryDetailsSerializer(serializers.ModelSerializer):
         fields = ['id', 'NAME', 'movies']
 
 
+
 # for review creation
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
+
 
 
 # for rating creation

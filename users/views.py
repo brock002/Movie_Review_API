@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.generics import CreateAPIView
 from .serializers import MovieSerializer, CatgeorySerializer, CategoryDetailsSerializer, RatingSerializer, ReviewSerializer
-from .models import Movie, Rating, Review, Category
+from .models import Movie, Category
+from django.db.models import Avg
 
 
 # get requests for category model
@@ -15,7 +16,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 # get requests for movie model
 class MovieViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.annotate(rating=Avg('ratings__Count'))
     serializer_class = MovieSerializer
 
 # post request handler for review creation
