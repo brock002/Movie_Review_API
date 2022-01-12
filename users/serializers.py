@@ -53,6 +53,8 @@ class CustomTokenSerializer(TokenSerializer):
 
 # for movies
 class MovieReviewsSerializer(serializers.ModelSerializer):
+    USER = serializers.StringRelatedField()
+
     class Meta:
         model = Review
         fields = ['id', 'Review', 'USER']
