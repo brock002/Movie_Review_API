@@ -76,13 +76,6 @@ class CatgeorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
-class CategoryDetailsSerializer(serializers.ModelSerializer):
-    movies = MovieSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Category
-        fields = ['id', 'NAME', 'movies']
-
 
 
 # for review creation

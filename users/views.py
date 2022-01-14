@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from rest_framework.generics import CreateAPIView
-from .serializers import MovieSerializer, CatgeorySerializer, CategoryDetailsSerializer, RatingSerializer, ReviewSerializer
+from rest_framework.generics import CreateAPIView, ListAPIView
+from .serializers import MovieSerializer, CatgeorySerializer, RatingSerializer, ReviewSerializer
 from .models import Movie, Category
 from django.db.models import Avg
 
@@ -8,11 +8,7 @@ from django.db.models import Avg
 # get requests for category model
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Category.objects.all()
-
-    def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return CategoryDetailsSerializer
-        return CatgeorySerializer
+    serializer_class = CatgeorySerializer
 
 # get requests for movie model
 class MovieViewSet(viewsets.ReadOnlyModelViewSet):
@@ -26,3 +22,10 @@ class ReviewCreateAPIView(CreateAPIView):
 # post request handler for rating creation
 class RatingCreateAPIView(CreateAPIView):
     serializer_class = RatingSerializer
+
+# categories/<id>/movies
+class MoviesInCategoryListAPIView(ListAPIView):
+    serializer_class = MovieSerializer
+
+    def get_queryset(self):
+        return Category.objects.get(id=self.request.path.split('/')[-3]).movies.annotate(rating=Avg('ratings__Count'))
