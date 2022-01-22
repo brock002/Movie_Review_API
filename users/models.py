@@ -13,7 +13,8 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.email.split('@')[0]
+        return self.first_name+" "+self.last_name
+        # return self.email.split('@')[0]
 
 
 class Category(models.Model):

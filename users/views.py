@@ -12,7 +12,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 # get requests for movie model
 class MovieViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Movie.objects.annotate(rating=Avg('ratings__Count'))
+    queryset = Movie.objects.annotate(rating=Avg('ratings__Count')).order_by('-rating')
     serializer_class = MovieSerializer
 
 # post request handler for review creation
@@ -28,4 +28,4 @@ class MoviesInCategoryListAPIView(ListAPIView):
     serializer_class = MovieSerializer
 
     def get_queryset(self):
-        return Category.objects.get(id=self.request.path.split('/')[-3]).movies.annotate(rating=Avg('ratings__Count'))
+        return Category.objects.get(id=self.request.path.split('/')[-3]).movies.annotate(rating=Avg('ratings__Count')).order_by('-rating')

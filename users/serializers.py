@@ -52,6 +52,12 @@ class CustomTokenSerializer(TokenSerializer):
 
 
 # for movies
+class MovieCategoriesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ['id', 'NAME']
+
 class MovieReviewsSerializer(serializers.ModelSerializer):
     USER = serializers.StringRelatedField()
 
@@ -59,14 +65,21 @@ class MovieReviewsSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['id', 'Review', 'USER']
 
+class MovieRatingsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Rating
+        fields = ['id','Count', 'USER']
+
 class MovieSerializer(serializers.ModelSerializer):
-    CATEGORIES = serializers.StringRelatedField(many=True)
+    CATEGORIES = MovieCategoriesSerializer(many=True, read_only=True)
     reviews = MovieReviewsSerializer(many=True, read_only=True)
+    ratings = MovieRatingsSerializer(many=True, read_only=True)
     rating = serializers.FloatField()
 
     class Meta:
         model = Movie
-        fields = ['id', 'NAME', 'COVER', 'CAST', 'DESCRIPTION', 'rating', 'CATEGORIES', 'reviews']
+        fields = ['id', 'NAME', 'COVER', 'CAST', 'DESCRIPTION', 'rating', 'CATEGORIES', 'reviews', 'ratings']
 
 
 
