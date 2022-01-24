@@ -12,3 +12,7 @@
 
 - ##### the requirements specified in the requirements.txt file needs to be installed.
 - ##### the `token` file needs to be created locally.
+
+<br/>
+
+## A React Frontend for this project can be found in [this repository](https://github.com/brock002/Movie_Review_Frontend.git)
