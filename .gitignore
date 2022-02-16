@@ -6,3 +6,5 @@ media
 token.py
 migrations
 random_data_generator.py
+.vscode
+static
