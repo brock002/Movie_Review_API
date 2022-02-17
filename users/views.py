@@ -2,12 +2,12 @@ from rest_framework import viewsets
 from rest_framework.generics import CreateAPIView, ListAPIView
 from .serializers import MovieSerializer, CatgeorySerializer, RatingSerializer, ReviewSerializer
 from .models import Movie, Category
-from django.db.models import Avg
+from django.db.models import Avg, Count
 
 
 # get requests for category model
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.annotate(movie_count=Count('movies')).order_by('-movie_count')
     serializer_class = CatgeorySerializer
 
 # get requests for movie model
