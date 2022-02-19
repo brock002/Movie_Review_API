@@ -6,15 +6,18 @@ from .managers import CustomUserManager
 
 class CustomUser(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_("email address"), unique=True)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     objects = CustomUserManager()
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.first_name+" "+self.last_name
-        # return self.email.split('@')[0]
+        return (
+            self.first_name + " " + self.last_name
+            if self.first_name != ""
+            else self.email.split("@")[0]
+        )
 
 
 class Category(models.Model):
@@ -26,11 +29,11 @@ class Category(models.Model):
 
 class Movie(models.Model):
     def nameFile(instance, filename):
-        return '/'.join(['cover_pic', str(instance.NAME), filename])
+        return "/".join(["cover_pic", str(instance.NAME), filename])
 
     NAME = models.TextField(blank=False)
     COVER = models.ImageField(upload_to=nameFile, blank=True)
-    CATEGORIES = models.ManyToManyField(Category, related_name='movies')
+    CATEGORIES = models.ManyToManyField(Category, related_name="movies")
     CAST = models.TextField(blank=False)
     DESCRIPTION = models.TextField(blank=False)
 
@@ -40,8 +43,10 @@ class Movie(models.Model):
 
 class Review(models.Model):
     Review = models.TextField()
-    MOVIE = models.ForeignKey(Movie, related_name='reviews', on_delete=models.CASCADE)
-    USER = models.ForeignKey(CustomUser, related_name='reviews', on_delete=models.CASCADE)
+    MOVIE = models.ForeignKey(Movie, related_name="reviews", on_delete=models.CASCADE)
+    USER = models.ForeignKey(
+        CustomUser, related_name="reviews", on_delete=models.CASCADE
+    )
     # LIKES = models.IntegerField()
     # DISLIKES = models.IntegerField()
 
@@ -51,8 +56,10 @@ class Review(models.Model):
 
 class Rating(models.Model):
     Count = models.IntegerField()
-    MOVIE = models.ForeignKey(Movie, related_name='ratings', on_delete=models.CASCADE)
-    USER = models.ForeignKey(CustomUser, related_name='ratings', on_delete=models.CASCADE)
+    MOVIE = models.ForeignKey(Movie, related_name="ratings", on_delete=models.CASCADE)
+    USER = models.ForeignKey(
+        CustomUser, related_name="ratings", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return str(self.Count)
