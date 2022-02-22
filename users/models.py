@@ -47,8 +47,6 @@ class Review(models.Model):
     USER = models.ForeignKey(
         CustomUser, related_name="reviews", on_delete=models.CASCADE
     )
-    # LIKES = models.IntegerField()
-    # DISLIKES = models.IntegerField()
 
     def __str__(self):
         return self.Review
